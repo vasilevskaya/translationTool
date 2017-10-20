@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/vue"></script>
+    <script type="text/javascript" src="words.json"></script>
+</head>
+<body>
+
+    <div id="main" style="float: left">
+        <template v-for="record in records">
+            <!--<div class="text-center u-padding-T-xl u-margin-T-xl">-->
+            <h1 class="u-padding-T-xl">
+                <b id="word">{{ record.word }}</b>
+            </h1>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-sm-offset-3">
+                        <span id="definition" v-html="record.definition"></span>
+                        <p id="sentence" v-html="record.sentence"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+    <div id="dictionary" style="float: left">
+        <div id="input">
+            <input v-model="newWord" @keyup.enter="add" />
+            <input v-model="newTranslation" @keyup.enter="add" />
+            <input v-model="newDefinition" @keyup.enter="add" />
+            <input v-model="newSentense" @keyup.enter="add" />
+        </div>
+    </div>
+
+    <script type="text/javascript" src="main.js"></script>
+
+        </h2>
+        <h3 v-else-if="level === 3">
+            <slot></slot>
+        </h3>
+        <h4 v-else-if="level === 4">
+            <slot></slot>
+        </h4>
+        <h5 v-else-if="level === 5">
+            <slot></slot>
+        </h5>
+        <h6 v-else-if="level === 6">
+            <slot></slot>
+        </h6>
+    </script>
+
+</body>
+</html>
