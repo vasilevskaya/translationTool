@@ -1,53 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
 <head>
-    <script src="https://unpkg.com/vue"></script>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.6.6/angular-sanitize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
     <script type="text/javascript" src="words.json"></script>
+    <script type="text/javascript" src="wordsWithTranslation.json"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/dataAPI.js"></script>
+    <script type="text/javascript" src="js/transationAPI.js"></script>
+    <link rel="stylesheet" href="./style/magstyle.css">
+    <link rel="stylesheet" href="./style/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Lato" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Test App</title>
 </head>
-<body>
-
-    <div id="main" style="float: left">
-        <template v-for="record in records">
-            <!--<div class="text-center u-padding-T-xl u-margin-T-xl">-->
-            <h1 class="u-padding-T-xl">
-                <b id="word">{{ record.word }}</b>
-            </h1>
-
+<body >
+    <header>
+       <!--<h1>Header</h1>  -->
+    </header>
+    <div id="anchoriamatop"></div>
+    <a id="upmeBtn" href="#anchoriamatop">Up</a>
+    <div id="main"  ng-controller="myCtrl">
+        <div class="lookingFor">
+            <input id="search" type="text" ng-model="search" placeholder="&#xF002;"  style="font-family:Arial, FontAwesome" 
+            ng-change=" change('search')" my-enter="findTranslation({{search}})"/>
+        </div>
+        <div class="wordBlock" ng-hide="record.isHiden" ng-repeat="record in filtered =  (records  | filter: {word : search})" >
+            <div style="margin:15px 0;display:inline-block;">
+                 <span id="anchor{{record.word}}"  class="delete" style="font-weight:800; font-size:30px;"  ng-model="record.word">{{ record.word }}
+                    &nbsp;
+                    <i id="delete" class="fa fa-trash-o" aria-hidden="true" ng-click="deleteRow(record.word)"></i>
+                </span>
+                <span>&#09; &#9866;</span>
+                <span id="translation" ng-bind-html="renderHtml(record.translation)">
+                     {{record.translation}}
+                </span>
+            </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6 col-sm-offset-3">
-                        <span id="definition" v-html="record.definition"></span>
-                        <p id="sentence" v-html="record.sentence"></p>
+                    <div>
+                        <span id="definition" ng-bind-html="renderHtml(record.definition)">{{record.definition}}</span>
+                        <p id="sentence" ng-bind-html="renderHtml(record.sentence)">{{record.sentence}}</p>
                     </div>
                 </div>
             </div>
-        </template>
-    </div>
-    <div id="dictionary" style="float: left">
-        <div id="input">
-            <input v-model="newWord" @keyup.enter="add" />
-            <input v-model="newTranslation" @keyup.enter="add" />
-            <input v-model="newDefinition" @keyup.enter="add" />
-            <input v-model="newSentense" @keyup.enter="add" />
         </div>
+        <p ng-hide="filtered.length"  >
+           <p ng-hide="filtered.length" ng-cloak> No results! </p>
+            <div ng-if="filtered.length==0 ||filtered.length==1" class="addNewWord">
+                 <h1 class="u-padding-T-xl">
+                   <b id="word" ng-model="newWord.word">{{ newWord.word }}</b>
+                </h1>
+                <div class="container">
+                <div class="row">
+                    <div>
+                        <span id="translation" ng-bind-html="renderHtml(newWord.translation)">{{newword.translation}}</span>
+                        <span id="definition" ng-bind-html="renderHtml(newWord.definition)">{{newword.definition}}</span>
+                        <p id="sentence" ng-bind-html="renderHtml(newWord.sentence)">{{newWord.sentence}}</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </p>
     </div>
-
-    <script type="text/javascript" src="main.js"></script>
-
-        </h2>
-        <h3 v-else-if="level === 3">
-            <slot></slot>
-        </h3>
-        <h4 v-else-if="level === 4">
-            <slot></slot>
-        </h4>
-        <h5 v-else-if="level === 5">
-            <slot></slot>
-        </h5>
-        <h6 v-else-if="level === 6">
-            <slot></slot>
-        </h6>
-    </script>
 
 </body>
 </html>
